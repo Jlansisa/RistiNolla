@@ -14,5 +14,6 @@
     <string name="bt_info_discovering">Select a device from list below to start a new game</string>
     <string name="bt_info_waiting">Wait for the game request from remote player</string>
     <string name="bt_error">General bt error</string>
+    <string name="game_stop">Stop</string>
 
 </resources>

@@ -17,7 +17,8 @@ public class ConnectedThread extends Thread{
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
-    private String result="";
+    char merkki;
+    int rsquare;
     //info
     public TextView info;
     ConnectedThread(BluetoothSocket socket, TextView infotext){
@@ -47,17 +48,18 @@ public class ConnectedThread extends Thread{
         // bytes returned from read()
         int bytes;
         //string to write in strean
-        char str = 'X';
+        int square = 9;
 
         // Keep listening to the InputStream until an exception occurs
         try {
             //Write to the server
-            mmOutStream.write(str);
+            mmOutStream.write(square);
             // Read from the InputStream (from the server)
             bytes = mmInStream.read(buffer);
             System.out.println("mmInStream read succeed: "+bytes+" bytes");
             //Convert read bytes (array) to String
-            result=new String(buffer);
+            merkki = new String(buffer).charAt(0);
+            int rsquare = (int)merkki;
             info.post(new Update());
             mmInStream.close();
             mmOutStream.close();
@@ -68,7 +70,7 @@ public class ConnectedThread extends Thread{
     }
     class Update implements Runnable {
         public void run() {
-            info.setText(result);
+            info.setText(rsquare);
         }
     }
 }

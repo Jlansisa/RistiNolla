@@ -7,6 +7,7 @@ package application.my.bluetoothristinolla2;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
@@ -139,6 +140,27 @@ public class Connection
     }
 
     /*
+     * my turn
+     */
+    public boolean turnDo(){
+        if(!threadServer.isAlive()){
+            threadServer.start();
+        } else {
+            threadServer.startTh();
+        }
+        return true;
+    }
+
+
+    /*
+     * my turn
+     */
+    public boolean turnWait(){
+        if(threadServer != null)
+            threadServer.stopTh();
+        return true;
+    }
+    /*
      * Helper for enableDiscovery
      */
     final BroadcastReceiver bReceiver = new BroadcastReceiver() {
@@ -199,6 +221,9 @@ public class Connection
     * Disable BT visibility
     */
     public boolean disableVisibility(){
+        Log.d("TAGI","disableVisibility");
+        if(threadServer != null)
+            threadServer.stopTh();
         return true;
     }
 
