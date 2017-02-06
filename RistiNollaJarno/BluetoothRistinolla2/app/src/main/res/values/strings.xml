@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">BluetoothRistinolla2</string>
+    <string name="Find">Find Opponent</string>
+    <string name="Wait">Wait for Opponent</string>
+    <string name="no_bt_permission">No bluetooth permission. Asking from User</string>
+    <string name="bt_permission_granted">Bluetooth permission granted</string>
+    <string name="bt_not_supported">Your device does not support Bluetooth</string>
+    <string name="bt_is_supported">Your device supports Bluetooth</string>
+    <string name="bt_is_on">Bluetooth turned on</string>
+    <string name="bt_was_on">Bluetooth is already on</string>
+    <string name="bt_activated">Bluetooth is activated</string>
+    <string name="bt_finding">Searching...</string>
+    <string name="bt_waiting">Waiting...</string>
+    <string name="bt_info_discovering">Select a device from list below to start a new game</string>
+    <string name="bt_info_waiting">Wait for the game request from remote player</string>
+    <string name="bt_error">General bt error</string>
+
+</resources>
