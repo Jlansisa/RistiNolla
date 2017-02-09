@@ -98,8 +98,11 @@ public class MainActivity extends AppCompatActivity
      */
 
     private void findOpponent(){
-        //start discovering to find an opponent
+        //start discovering new devices
+        //and list them on ListView
         if(BT.enableDiscovery()){
+            //set state to wait and disable
+            //find button
             turnWait();
         } else {
             info.setText(R.string.bt_error);
@@ -133,8 +136,9 @@ public class MainActivity extends AppCompatActivity
     private void turnWait(){
         //set device visible
         if(BT.turnWait()){
-            //info.setText(R.string.bt_info_waiting);
-            //if clicked, disable to avoid another click
+
+            //if clicked, disable find-button
+            // to avoid another click
             btnWait.setEnabled(true);
             btnWait.setText(R.string.bt_waiting);
             btnFind.setEnabled(false);
