@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/buttoni"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/button_send"
+        android:backgroundTint="#050000"
+        android:textColor="#f9f4f4"
+        android:textSize="28sp"
+        android:minWidth="128dp"
+        android:minHeight="128dp" />
+
+</RelativeLayout>
