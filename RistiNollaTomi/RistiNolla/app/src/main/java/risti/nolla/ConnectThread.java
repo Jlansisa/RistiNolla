@@ -42,18 +42,17 @@ public class ConnectThread extends Thread  {
     }
 
     public void run() {
-        System.out.println("Testi");
         //info.post(new Update());
         try {
             // Connect the device through the socket. This will block
             // until it succeeds or throws an exception
             mmSocket.connect();
-            System.out.println("mmSocet connected");
         } catch (IOException connectException) {
             // Unable to connect; close the socket and get out
             try {
                 mmSocket.close();
-            } catch (IOException closeException) { }
+            } catch (IOException closeException) {
+            }
             return;
         }
 
@@ -62,10 +61,4 @@ public class ConnectThread extends Thread  {
         new ConnectedThread(mmSocket, info).start();
 
     }
-    /*class Update implements Runnable {
-        public void run() {
-            //asetetaan säikeestä tullut teksti käyttöliittymän kenttään.
-            info.setText("dasfafas");
-        }
-    }*/
 }

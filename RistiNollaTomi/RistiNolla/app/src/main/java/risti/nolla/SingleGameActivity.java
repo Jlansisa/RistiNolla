@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Azumi on 9.2.2017.
@@ -14,220 +15,254 @@ import android.widget.TextView;
 public class SingleGameActivity extends AppCompatActivity {
     boolean player1 = true;
     // boolean player2 = false;
-    boolean button1pressed = false;
-    boolean button2pressed = false;
-    boolean button3pressed = false;
-    boolean button4pressed = false;
-    boolean button5pressed = false;
-    boolean button6pressed = false;
-    boolean button7pressed = false;
-    boolean button8pressed = false;
-    boolean button9pressed = false;
     int x = 0;
+    TextView teksti;
+    CharHandler XCharhandler = new CharHandler();
+    CharHandler OCharhandler = new CharHandler();
+    Button bulc;
+    Button bum;
+    Button burc;
+    Button brm;
+    Button bm;
+    Button brmc;
+    Button bdlc;
+    Button bdm;
+    Button blm;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singlegame);
+       teksti = (TextView) findViewById(R.id.InfoTextView);
+        bulc = (Button) findViewById(R.id.button1);
+        bum = (Button) findViewById(R.id.button2);
+        burc = (Button) findViewById(R.id.button3);
+        brm = (Button) findViewById(R.id.button4);
+        bm = (Button) findViewById(R.id.button5);
+        brmc = (Button) findViewById(R.id.button6);
+        bdlc = (Button) findViewById(R.id.button7);
+        bdm = (Button) findViewById(R.id.button8);
+        blm = (Button) findViewById(R.id.button9);
 
 
     }
 
 
-    public void button_1(View v) {
+    public void ULC(View v) {
 
-        Button b1 = (Button) findViewById(R.id.button1);
-        if (player1 == true && button1pressed == false) {
-            b1.setText("X");
+
+        if (player1 == true ) {
+            bulc.setText("X");
             player1 = false;
-            button1pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("O-Pelaajan vuoro");
-            x++;
-        } else if (player1 == false && button1pressed == false) {
-            b1.setText("O");
+            XCharhandler.calculateFields("ULC");
+        } else{
+            bulc.setText("O");
+            OCharhandler.calculateFields("ULC");
             player1 = true;
-            button1pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("X-Pelaajan vuoro");
-            x++;
         }
 
+        bulc.setClickable(false);
+        x++;
+        tilanne();
+    }
+
+    public void UM(View v) {
+
+
+        if (player1 == true ) {
+            bum.setText("X");
+            player1 = false;
+            teksti.setText("O-Pelaajan vuoro");
+            XCharhandler.calculateFields("UM");
+        } else{
+            bum.setText("O");
+            player1 = true;
+            teksti.setText("X-Pelaajan vuoro");
+            OCharhandler.calculateFields("UM");
+        }
+        bum.setClickable(false);
+        x++;
+        tilanne();
 
     }
 
-    public void button_2(View v) {
+    public void URC(View v) {
 
-        Button b1 = (Button) findViewById(R.id.button2);
-        if (player1 == true && button2pressed == false) {
-            b1.setText("X");
+
+        if (player1 == true) {
+            burc.setText("X");
             player1 = false;
-            button2pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("O-Pelaajan vuoro");
-            x++;
-        } else if (player1 == false && button2pressed == false) {
-            b1.setText("O");
+            XCharhandler.calculateFields("URC");
+        } else{
+            burc.setText("O");
             player1 = true;
-            button2pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("X-Pelaajan vuoro");
-            x++;
+            OCharhandler.calculateFields("URC");
         }
-
-
+        burc.setClickable(false);
+        x++;
+        tilanne();
     }
 
-    public void button_3(View v) {
+    public void RM(View v) {
 
-        Button b1 = (Button) findViewById(R.id.button3);
-        if (player1 == true && button3pressed == false) {
-            b1.setText("X");
+
+        if (player1 == true ) {
+            brm.setText("X");
             player1 = false;
-            button3pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("O-Pelaajan vuoro");
-            x++;
-        } else if (player1 == false && button3pressed == false) {
-            b1.setText("O");
+            XCharhandler.calculateFields("RM");
+        } else{
+            brm.setText("O");
             player1 = true;
-            button3pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("X-Pelaajan vuoro");
-            x++;
+            OCharhandler.calculateFields("RM");
         }
-
+        brm.setClickable(false);
+        x++;
+        tilanne();
     }
 
-    public void button_4(View v) {
+    public void M(View v) {
 
-        Button b1 = (Button) findViewById(R.id.button4);
-        if (player1 == true && button4pressed == false) {
-            b1.setText("X");
+
+        if (player1 == true ) {
+            bm.setText("X");
             player1 = false;
-            button4pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("O-Pelaajan vuoro");
-            x++;
-        } else if (player1 == false && button4pressed == false) {
-            b1.setText("O");
+            XCharhandler.calculateFields("M");
+        } else {
+            bm.setText("O");
             player1 = true;
-            button4pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("X-Pelaajan vuoro");
-            x++;
+            OCharhandler.calculateFields("M");
         }
-
+        bm.setClickable(false);
+        x++;
+        tilanne();
     }
 
-    public void button_5(View v) {
+    public void RMC(View v) {
 
-        Button b1 = (Button) findViewById(R.id.button5);
-        if (player1 == true && button5pressed == false) {
-            b1.setText("X");
+
+        if (player1 == true ) {
+            brmc.setText("X");
             player1 = false;
-            button5pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("O-Pelaajan vuoro");
-            x++;
-        } else if (player1 == false && button5pressed == false) {
-            b1.setText("O");
+            XCharhandler.calculateFields("RMC");
+        } else {
+            brmc.setText("O");
             player1 = true;
-            button5pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("X-Pelaajan vuoro");
-            x++;
+            OCharhandler.calculateFields("RMC");
         }
-
+        brmc.setClickable(false);
+        x++;
+        tilanne();
     }
 
-    public void button_6(View v) {
+    public void DLC(View v) {
 
-        Button b1 = (Button) findViewById(R.id.button6);
-        if (player1 == true && button6pressed == false) {
-            b1.setText("X");
+
+        if (player1 == true) {
+            bdlc.setText("X");
             player1 = false;
-            button6pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("O-Pelaajan vuoro");
-            x++;
-        } else if (player1 == false && button6pressed == false) {
-            b1.setText("O");
+            XCharhandler.calculateFields("DLC");
+        } else {
+            bdlc.setText("O");
             player1 = true;
-            button6pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("X-Pelaajan vuoro");
-            x++;
+            OCharhandler.calculateFields("DLC");
         }
-
+        bdlc.setClickable(false);
+        x++;
+        tilanne();
     }
 
-    public void button_7(View v) {
+    public void DM(View v) {
 
-        Button b1 = (Button) findViewById(R.id.button7);
-        if (player1 == true && button7pressed == false) {
-            b1.setText("X");
+
+        if (player1 == true) {
+            bdm.setText("X");
             player1 = false;
-            button7pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("O-Pelaajan vuoro");
-            x++;
-        } else if (player1 == false && button7pressed == false) {
-            b1.setText("O");
+            XCharhandler.calculateFields("DM");
+        } else {
+            bdm.setText("O");
             player1 = true;
-            button7pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("X-Pelaajan vuoro");
-            x++;
+            OCharhandler.calculateFields("DM");
         }
-
+        bdm.setClickable(false);
+        x++;
+        tilanne();
     }
 
-    public void button_8(View v) {
+    public void LM(View v) {
 
-        Button b1 = (Button) findViewById(R.id.button8);
-        if (player1 == true && button8pressed == false) {
-            b1.setText("X");
+
+        if (player1 == true ) {
+            blm.setText("X");
             player1 = false;
-            button8pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("O-Pelaajan vuoro");
-            x++;
-        } else if (player1 == false && button8pressed == false) {
-            b1.setText("O");
+            XCharhandler.calculateFields("LM");
+        } else {
+            blm.setText("O");
             player1 = true;
-            button8pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
             teksti.setText("X-Pelaajan vuoro");
-            x++;
+            OCharhandler.calculateFields("LM");
         }
-
-    }
-
-    public void button_9(View v) {
-
-        Button b9 = (Button) findViewById(R.id.button9);
-        if (player1 == true && button9pressed == false) {
-            b9.setText("X");
-            player1 = false;
-            button9pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
-            teksti.setText("O-Pelaajan vuoro");
-            x++;
-        } else if (player1 == false && button9pressed == false) {
-            b9.setText("O");
-            player1 = true;
-            button9pressed = true;
-            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
-            teksti.setText("X-Pelaajan vuoro");
-            x++;
-        }
-
+        blm.setClickable(false);
+        x++;
+        tilanne();
     }
 
     public void stop_button(View v){
 
         Intent intent= new Intent(SingleGameActivity.this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void tilanne(){
+        if(x == 9){
+            TextView teksti = (TextView) findViewById(R.id.InfoTextView);
+            teksti.setText("Ruudukot loppuivat");
+        }
+         if (XCharhandler.win() == true) {
+            teksti.setText("X VOITTI");
+             lopetus();
+
+
+        }
+        if(OCharhandler.win() == true){
+
+            teksti.setText("O VOITTI");
+            lopetus();
+        }
+
+    }
+
+    public void reset(){
+
+
+
+    }
+
+    public void lopetus(){
+        bulc.setClickable(false);
+        bum.setClickable(false);
+        burc.setClickable(false);
+        blm.setClickable(false);
+        bm.setClickable(false);
+        brm.setClickable(false);
+        bdlc.setClickable(false);
+        bdm.setClickable(false);
+        brmc.setClickable(false);
+
     }
 
 }
