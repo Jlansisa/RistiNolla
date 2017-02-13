@@ -3,6 +3,8 @@ package application.my.bluetoothristinolla2;
 import android.bluetooth.BluetoothSocket;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import android.util.Log;
 import android.widget.TextView;
 /**
  * Created by jarno on 5.2.2017.
@@ -21,8 +23,8 @@ public class ClientHandler implements Runnable
     private String inMsg;
     //info
     private TextView info;
-    String merkki;
-    char m;
+    char merkki;
+    int square;
 
     /*
      * Construct
@@ -55,19 +57,17 @@ public class ClientHandler implements Runnable
 
             //Now the handler is ready to run
             while(running){
-
-                System.out.println("Clienthandler waiting");
+                Log.d("TAGI","Clienthandler waiting");
 
                 //read incoming bytes into buffer and save the num of bytes as numBytesRead
                 int numBytesRead = in.read(inputBuffer);
-                merkki = new String(inputBuffer);
-                m = merkki.charAt(0);
-                System.out.println("Bytes read: "+numBytesRead);
-                System.out.println("Strien: "+ merkki);
+                merkki = new String(inputBuffer).charAt(0);
+                square = (int)merkki;
+                Log.d("TAGI","Bytes read: "+numBytesRead);
+                Log.d("TAGI","Square: "+square);
                 info.post(new Update());
 
-                //send a respond as a test
-                outMsg="Server:"+new String(inputBuffer, 0, numBytesRead);
+
 
             }
             // The loop only terminates when the client disconnects. It's safe to close
@@ -89,9 +89,8 @@ public class ClientHandler implements Runnable
     }
     class Update implements Runnable {
         public void run() {
-            System.out.println("outer");
-            if(m == 'X')info.setText("OK");
-            else info.setText("Sotkua");
+            Log.d("TAGI","Updating info");
+            if(square == 9)info.setText("Game start");
             info.invalidate();
         }
     }

@@ -7,6 +7,7 @@ package application.my.bluetoothristinolla2;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
@@ -51,6 +52,8 @@ public class Connection
     private static final int REQUEST_DISCOVERABILITY_TIME = 300;
     //Server threat for incoming connections
     private ThreadServer threadServer=null;
+    //threat server status. disabled when false
+    private boolean serverStatus;
 
 
     /*
@@ -89,6 +92,8 @@ public class Connection
                     (R.string.bt_was_on),
                     Toast.LENGTH_LONG).show();
         }
+        //set server off as default
+        serverStatus = false;
     }
 
     /*
@@ -115,6 +120,8 @@ public class Connection
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String deviceMacAddress="";
                 selectedDevice=myListView.getItemAtPosition(i).toString() ;
+
+                //setting the selected device
                 if (selectedDevice!=null) {
 
                     //erotetaan stringista mac osoite
@@ -122,7 +129,7 @@ public class Connection
                     deviceMacAddress=s[1];
                 }
                 BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceMacAddress);
-                System.out.println("MAC-osoite: "+deviceMacAddress);
+                Log.d("TAGI", "MAC-osoite: "+deviceMacAddress);
                 // Cancel discovery because it will slow down the connection
                 mBluetoothAdapter.cancelDiscovery();
                 //Threat for Client -> Server connection
@@ -136,6 +143,35 @@ public class Connection
             BTArrayAdapter.add(device.getName() + "\n" + device.getAddress());//MAC-osoite
         }
         return true;
+    }
+
+    /*
+     * my turn
+     */
+    public boolean turnDo(){
+        if(!threadServer.isAlive()){
+            threadServer.start();
+        } else {
+            threadServer.startTh();
+        }
+        return true;
+    }
+
+
+    /*
+     * my turn
+     */
+    public boolean turnWait(){
+        if(threadServer != null)
+            threadServer.stopTh();
+        return true;
+    }
+
+    /*
+     * server status
+     */
+    public boolean getServerstatus(){
+        return serverStatus;
     }
 
     /*
@@ -178,6 +214,9 @@ public class Connection
         //start a new thread to serve incoming connections
         threadServer=new ThreadServer(mBluetoothAdapter, mActivity, info);
         threadServer.start();
+
+        //set server status on
+        serverStatus = true;
         return true;
     }
 
@@ -199,6 +238,10 @@ public class Connection
     * Disable BT visibility
     */
     public boolean disableVisibility(){
+        Log.d("TAGI","disableVisibility");
+        if(threadServer != null)
+            threadServer.stopTh();
+        serverStatus = false;
         return true;
     }
 

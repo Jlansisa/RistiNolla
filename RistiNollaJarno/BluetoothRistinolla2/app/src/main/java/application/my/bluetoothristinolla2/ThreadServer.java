@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothAdapter;
 import java.io.IOException;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 import android.widget.TextView;
 
 public class ThreadServer extends Thread
@@ -58,12 +59,12 @@ public class ThreadServer extends Thread
      */
     public void run() {
 
-        System.out.println("threadserver started");
         //init socket
         BluetoothSocket socket = null;
         //num of sockets
         int num=1;
         isRunning = true;
+        Log.d("TAGI","isRunning = true");
         // Keep listening until exception occurs or a socket is returned
         while (isRunning) {
             try {
@@ -73,7 +74,6 @@ public class ThreadServer extends Thread
             }
             // If a connection was accepted
             if (socket != null) {
-                System.out.println("Socket exists");
                 // Do work to manage the connection (in a separate thread)
 
                 // Luodaan yhtä asiakasta palveleva säie ja käynnisteään se
@@ -83,15 +83,21 @@ public class ThreadServer extends Thread
 
                 num++;
             }else {
-                System.out.println("Socket doesn't exist");
+                Log.d("TAGI","Socket doesn't exist");
             }
         }
 
     }
-    class Update implements Runnable {
-        public void run() {
-            info.setText("clienthandler käynnistety");
-            info.invalidate();
-        }
+
+    public void cancel() {
+        try {
+            mmServerSocket.close();
+        } catch (IOException e) { }
+    }
+    public void stopTh(){
+        isRunning=false;
+    }
+    public void startTh(){
+        isRunning=true;
     }
 }
