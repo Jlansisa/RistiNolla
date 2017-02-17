@@ -3,6 +3,8 @@
  */
 package application.my.bluetoothristinolla2;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import android.app.Activity;
@@ -10,7 +12,9 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothAdapter;
 import java.io.IOException;
 import android.bluetooth.BluetoothSocket;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class ThreadServer extends Thread
@@ -20,6 +24,7 @@ public class ThreadServer extends Thread
     //Self made unique ID
     public static final UUID MY_SERVICE_UUID =
             UUID.fromString("bb96d1d2-beac-20cd-9b28-1711311b8b55");
+
     //Socet for incoming connections
     private final BluetoothServerSocket mmServerSocket;
     //BT device
@@ -27,15 +32,18 @@ public class ThreadServer extends Thread
     //Trigger to control socket status
     private boolean isRunning;
     //main activity imported from super class
-    private Activity mActivity;
+    private AppCompatActivity mActivity;
     //info
     private TextView info;
+
+        int transferValue;
+
 
 
     /*
      * Construct
      */
-    public ThreadServer(BluetoothAdapter baa, Activity activity, TextView infotext){
+    public ThreadServer(BluetoothAdapter baa, AppCompatActivity activity, TextView infotext, int tr){
         mActivity = activity;
         info = infotext;
         BluetoothServerSocket tmp = null;
@@ -51,6 +59,10 @@ public class ThreadServer extends Thread
             e.printStackTrace();
         }
         mmServerSocket = tmp;
+
+        int transferValue = tr;
+
+
 
     }
 
@@ -77,7 +89,7 @@ public class ThreadServer extends Thread
                 // Do work to manage the connection (in a separate thread)
 
                 // Luodaan yhtä asiakasta palveleva säie ja käynnisteään se
-                ClientHandler handler = new ClientHandler(socket, num, info);
+                ClientHandler handler = new ClientHandler(socket, num, info, mActivity, transferValue);
                 Thread clientThread = new Thread(handler);
                 clientThread.start();
 

@@ -7,5 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="GameButton">
+        <item name="android:textSize">@dimen/activity_game_buttonText</item>
+        <item name="android:layout_width">@dimen/activity_game_buttonWidth</item>
+        <item name="android:layout_height">@dimen/activity_game_buttonheight</item>
+    </style>
 </resources>

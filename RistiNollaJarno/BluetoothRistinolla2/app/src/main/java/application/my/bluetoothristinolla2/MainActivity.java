@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.view.View;
@@ -13,13 +14,17 @@ import android.widget.ArrayAdapter;
 
 public class MainActivity extends AppCompatActivity
 {
-
+    Button b0, b1, b2, b3, b4, b5, b6, b7, b8;
     //main layout
     AppCompatActivity myactivity;
     //info field
     private TextView info ;
     private Button btnFind;
     private Button btnWait;
+
+    View grid;
+
+    ListView list;
     //Bluetooth connection object
     Connection BT;
     //Adapter for listing devices on ListView
@@ -37,9 +42,20 @@ public class MainActivity extends AppCompatActivity
         myactivity = this;
 
         //activate BT
-        BT = new Connection(myactivity);
+        BT = new Connection(this);
 
         info = (TextView)findViewById(R.id.infotext);
+        b0 = (Button)findViewById(R.id.B0);
+         b1 = (Button)findViewById(R.id.B1);
+         b2 = (Button)findViewById(R.id.B2);
+         b3 = (Button)findViewById(R.id.B3);
+         b4 = (Button)findViewById(R.id.B4);
+         b5 = (Button)findViewById(R.id.B5);
+         b6 = (Button)findViewById(R.id.B6);
+         b7 = (Button)findViewById(R.id.B7);
+         b8 = (Button)findViewById(R.id.B8);
+        grid = (View)findViewById(R.id.game_layout_grid);
+        list = (ListView)findViewById(R.id.listView1);
 
 
         //start
@@ -84,11 +100,45 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().equals("Game start")) {
-                    Intent intent= new Intent(myactivity, GameActivity.class);
-                    startActivity(intent);
+                    list.setVisibility(View.GONE);
+                    grid.setVisibility(View.VISIBLE);
+
+                    /*b0.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            sendTurn(0);
+                        }
+                    });*/
+                    b0.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {sendTurn(0);Log.d("TAGI","Button 0 clicked");}});
+                    b1.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {sendTurn(1);Log.d("TAGI","Button 1 clicked");}});
+                    b2.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {sendTurn(2);Log.d("TAGI","Button 2 clicked");}});
+                    b3.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {sendTurn(3);Log.d("TAGI","Button 3 clicked");}});
+                    b4.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {sendTurn(4);Log.d("TAGI","Button 4 clicked");}});
+                    b5.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {sendTurn(5);Log.d("TAGI","Button 5 clicked");}});
+                    b6.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {sendTurn(6);Log.d("TAGI","Button 6 clicked");}});
+                    b7.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {sendTurn(7);Log.d("TAGI","Button 7 clicked");}});
+                    b8.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {sendTurn(8);Log.d("TAGI","Button 8 clicked");}});
+                    //Intent intent= new Intent(myactivity, GameActivity.class);
+                    //intent.putExtra("RMAC", BT.getRemoteMAC());
+                    //Bundle bundle = new Bundle();
+                   // bundle.putParcelable("data", BT);
+                    //intent.putExtras(bundle);
+                    //startActivity(intent);
+
+
                 }
 
             }
+
+
         });
 
 
@@ -101,9 +151,10 @@ public class MainActivity extends AppCompatActivity
         //start discovering new devices
         //and list them on ListView
         if(BT.enableDiscovery()){
-            //set state to wait and disable
-            //find button
-            turnWait();
+
+            //disable find button
+            disableButton(btnFind, R.string.bt_finding);
+            enableButton(btnWait, (R.string.Wait));
         } else {
             info.setText(R.string.bt_error);
         }
@@ -118,57 +169,59 @@ public class MainActivity extends AppCompatActivity
         if(BT.enableVisibility()){
             //info.setText(R.string.bt_info_waiting);
             //if clicked, disable to avoid another click
-            btnWait.setEnabled(false);
-            btnWait.setText(R.string.bt_waiting);
-            btnFind.setEnabled(true);
-            btnFind.setText(R.string.Find);
-
+            disableButton(btnWait, R.string.bt_waiting);
+            enableButton(btnFind, (R.string.Find));
         } else {
             info.setText(R.string.bt_error);
         }
     }
+
 
 
     /*
-     * State: waiting for turn
+     *  Disable button and set text
      */
 
-    private void turnWait(){
-        //set device visible
-        if(BT.turnWait()){
-
-            //if clicked, disable find-button
-            // to avoid another click
-            btnWait.setEnabled(true);
-            btnWait.setText(R.string.bt_waiting);
-            btnFind.setEnabled(false);
-            btnFind.setText(R.string.bt_finding);
-
-        } else {
-            info.setText(R.string.bt_error);
-        }
+    private void disableButton (Button b, int text){
+        b.setEnabled(false);
+        b.setText(text);
     }
 
     /*
-     * State: my turn
+     *  Enable button and set text
      */
+    private void enableButton (Button b, int text){
+        b.setEnabled(true);
+        b.setText(text);
+    }
 
-    private void turnDo(){
-
-        //start discovering
-        if(BT.turnDo()){
-            //info.setText(R.string.bt_info_discovering);
-            //if clicked, disable to avoid another click
-            btnFind.setEnabled(false);
-            btnFind.setText(R.string.bt_finding);
-            btnWait.setEnabled(true);
-            btnWait.setText(R.string.Wait);
-        } else {
-            info.setText(R.string.bt_error);
+    private void disableButton (int b, String text){
+        Button btn = b0;
+        switch(b){
+            case 0: btn = b0; break;
+            case 1: btn = b1; break;
+            case 2: btn = b2; break;
+            case 3: btn = b3; break;
+            case 4: btn = b4; break;
+            case 5: btn = b5; break;
+            case 6: btn = b6; break;
+            case 7: btn = b7; break;
+            case 8: btn = b8; break;
         }
+        btn.setText(text);
+        btn.setEnabled(false);
 
 
     }
+
+    private void sendTurn(int sq){
+
+        BT.sendTurn(sq);
+        disableButton(sq , "X");
+    }
+
+
+
 
 
 

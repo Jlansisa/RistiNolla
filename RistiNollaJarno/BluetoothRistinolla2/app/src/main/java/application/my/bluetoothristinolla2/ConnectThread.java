@@ -8,6 +8,8 @@ package application.my.bluetoothristinolla2;
 import android.bluetooth.BluetoothDevice;
 import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -21,12 +23,16 @@ public class ConnectThread extends Thread  {
     //sevice from super class
     private final BluetoothDevice mmDevice;
     private TextView info ;
+    int  transferValue;
+    Button btn;
 
 
-    public ConnectThread(BluetoothDevice device, Activity activity, TextView infotext){
+    public ConnectThread(BluetoothDevice device, Activity activity, TextView infotext, int tr){
         info = infotext;
 
         mActivity = activity;
+
+
         mmDevice = device;
         //temporary socket to assign as a final mmSocket
         BluetoothSocket tmp = null;
@@ -35,13 +41,19 @@ public class ConnectThread extends Thread  {
         try {
             // MY_UUID is the app's UUID string, also used by the server code
             tmp = device.createRfcommSocketToServiceRecord(ThreadServer.MY_SERVICE_UUID);
-        } catch (IOException e) { }
+        } catch (IOException e) { Log.d("TAGI", e.toString());}
 
         //assign final socket
         mmSocket = tmp;
+        transferValue = tr;
     }
 
+    public void setButton(Button b){
+        btn = b;
+
+    }
     public void run() {
+
         //info.post(new Update());
         try {
             // Connect the device through the socket. This will block
@@ -58,7 +70,8 @@ public class ConnectThread extends Thread  {
 
         // Do work to manage the connection (in a separate thread)
         //manageConnectedSocket(mmSocket);
-        new ConnectedThread(mmSocket, info).start();
+        Log.d("TAGI","ConnectedThread " + transferValue);
+        new ConnectedThread(mmSocket, info, transferValue, mActivity).start();
 
     }
 }

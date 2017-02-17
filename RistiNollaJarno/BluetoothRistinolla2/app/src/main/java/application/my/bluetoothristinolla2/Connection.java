@@ -7,7 +7,9 @@ package application.my.bluetoothristinolla2;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
@@ -24,13 +26,17 @@ import android.content.Context;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import android.os.Handler;
 
 public class Connection
 {
 
     //main activity
-    private Activity mActivity;
+    private AppCompatActivity mActivity;
     //info
     private TextView info;
 
@@ -55,12 +61,19 @@ public class Connection
     //threat server status. disabled when false
     private boolean serverStatus;
 
+    private int transferValue = 9;
+
+    private String Remote_MAC;
+
+    BluetoothDevice device ;
+
 
     /*
      * Construct
      */
 
     public Connection(AppCompatActivity activity){
+
         mActivity = activity;
         info = (TextView)mActivity.findViewById(R.id.infotext);
         //Check BT permissions
@@ -96,6 +109,10 @@ public class Connection
         serverStatus = false;
     }
 
+
+    public void setButton(AppCompatActivity ac){
+    }
+
     /*
      * Enable BT discovery
      */
@@ -127,13 +144,14 @@ public class Connection
                     //erotetaan stringista mac osoite
                     String [] s=selectedDevice.split("\n");
                     deviceMacAddress=s[1];
+                    Remote_MAC = deviceMacAddress;
                 }
-                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceMacAddress);
+                device = mBluetoothAdapter.getRemoteDevice(deviceMacAddress);
                 Log.d("TAGI", "MAC-osoite: "+deviceMacAddress);
                 // Cancel discovery because it will slow down the connection
                 mBluetoothAdapter.cancelDiscovery();
                 //Threat for Client -> Server connection
-                new ConnectThread(device, mActivity, info).start();
+                startThread();
             }
         });
         BTArrayAdapter = new ArrayAdapter<String>(mActivity, android.R.layout.simple_list_item_1);
@@ -143,35 +161,6 @@ public class Connection
             BTArrayAdapter.add(device.getName() + "\n" + device.getAddress());//MAC-osoite
         }
         return true;
-    }
-
-    /*
-     * my turn
-     */
-    public boolean turnDo(){
-        if(!threadServer.isAlive()){
-            threadServer.start();
-        } else {
-            threadServer.startTh();
-        }
-        return true;
-    }
-
-
-    /*
-     * my turn
-     */
-    public boolean turnWait(){
-        if(threadServer != null)
-            threadServer.stopTh();
-        return true;
-    }
-
-    /*
-     * server status
-     */
-    public boolean getServerstatus(){
-        return serverStatus;
     }
 
     /*
@@ -193,6 +182,14 @@ public class Connection
         }
     };
 
+    private void startThread(){
+        new ConnectThread(device, mActivity, info, transferValue).start();
+    }
+
+    private void dBUg(){
+
+    }
+
     /*
     * Enable BT visibility
     */
@@ -210,9 +207,8 @@ public class Connection
         Intent disvoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         disvoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, REQUEST_DISCOVERABILITY_TIME);
         mActivity.startActivityForResult(disvoverableIntent,REQUEST_ENABLE_DISCOVERABILITY);
-
         //start a new thread to serve incoming connections
-        threadServer=new ThreadServer(mBluetoothAdapter, mActivity, info);
+        threadServer=new ThreadServer(mBluetoothAdapter, mActivity, info, transferValue);
         threadServer.start();
 
         //set server status on
@@ -244,6 +240,28 @@ public class Connection
         serverStatus = false;
         return true;
     }
+
+    public void sendTurn(int sq){
+        Log.d("TAGI","sendTurn " + sq);
+        transferValue = sq;
+       // startThread();
+       // new ConnectThread(device, mActivity, info, sq).start();
+
+    }
+
+    /*
+     *  Remote players MAC
+     */
+    public String getRemoteMAC(){
+        return Remote_MAC;
+    }
+
+    public void setRemoteMAC(String MAC){
+        Remote_MAC = MAC;
+    }
+
+
+
 
     /*
      * Permission check
@@ -289,6 +307,11 @@ public class Connection
         }
         return false;
     }
+
+
+
+
+
 
 
 
